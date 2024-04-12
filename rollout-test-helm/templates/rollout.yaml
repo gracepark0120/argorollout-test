@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: {{ .Values.rollout.name }}
+  namespace: {{ .Values.spec.destination.namespace }}
 spec:
   replicas: {{ .Values.rollout.replicas }}
   revisionHistoryLimit: {{ .Values.rollout.revisionHistoryLimit }}

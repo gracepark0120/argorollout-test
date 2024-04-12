@@ -4,6 +4,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rollout-bluegreen-active
+  namespace: {{ .Values.spec.destination.namespace }}
 spec:
   type: {{ .Values.rolloutBlueGreen.active.type }}
   selector:
@@ -22,6 +23,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rollout-bluegreen-preview
+  namespace: {{ .Values.spec.destination.namespace }}
 spec:
   type: {{ .Values.rolloutBlueGreen.preview.type }}
   selector:
