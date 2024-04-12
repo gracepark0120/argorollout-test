@@ -9,7 +9,7 @@ source:
 
 spec:
   destination:
-    namespace: rollout-test
+    namespace: rollout-test2
     server: https://kubernetes.default.svc.cluster.local
 
 rollout:
