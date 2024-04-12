@@ -3,6 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+source:
+  repoURL: https://github.com/STCLab-Inc/surffy-k8s-helm
 
 image:
   repository: nginx
@@ -10,38 +12,46 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+spec:
+  destination:
+    namespace: rollout-test
+    server: https://kubernetes.default.svc.cluster.local
+
+rollout:
+  name: rollout-bluegreen
+  replicas: 2
+  revisionHistoryLimit: 2
+  image: argoproj/rollouts-demo:blue
+  imagePullPolicy: Always
+  containerPort: 8080
+  activeService: rollout-bluegreen-active
+  previewService: rollout-bluegreen-preview
+  autoPromotionEnabled: false
+
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+syncPolicy:
+  automated:
+    prune: false
+    selfHeal: true
 
-podAnnotations: {}
-podLabels: {}
+rolloutBlueGreen:
+  active:
+    enabled: true
+    type: NodePort
+    port: 80
+    targetPort: 8080
+    nodePort: 30081
+  preview:
+    enabled: true
+    type: NodePort
+    port: 80
+    targetPort: 8080
+    nodePort: 30082
 
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false
@@ -60,16 +70,6 @@ ingress:
   #      - chart-example.local
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
 
 livenessProbe:
   httpGet:

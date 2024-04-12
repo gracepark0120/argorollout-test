@@ -1,15 +1,35 @@
-apiVersion: v1
+{{- if .Values.rolloutBlueGreen.active.enabled }}
+---
 kind: Service
+apiVersion: v1
 metadata:
-  name: {{ include "rollout-test-helm.fullname" . }}
-  labels:
-    {{- include "rollout-test-helm.labels" . | nindent 4 }}
+  name: rollout-bluegreen-active
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  type: {{ .Values.rolloutBlueGreen.active.type }}
   selector:
-    {{- include "rollout-test-helm.selectorLabels" . | nindent 4 }}
+    app: rollout-bluegreen
+  ports:
+  - protocol: TCP
+    port: {{ .Values.rolloutBlueGreen.active.port }}
+    targetPort: {{ .Values.rolloutBlueGreen.active.targetPort }}
+    nodePort: {{ .Values.rolloutBlueGreen.active.nodePort }}
+
+{{- end }}
+
+{{- if .Values.rolloutBlueGreen.preview.enabled }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rollout-bluegreen-preview
+spec:
+  type: {{ .Values.rolloutBlueGreen.preview.type }}
+  selector:
+    app: rollout-bluegreen
+  ports:
+  - protocol: TCP
+    port: {{ .Values.rolloutBlueGreen.preview.port }}
+    targetPort: {{ .Values.rolloutBlueGreen.preview.targetPort }}
+    nodePort: {{ .Values.rolloutBlueGreen.preview.nodePort }}
+
+{{- end }}
