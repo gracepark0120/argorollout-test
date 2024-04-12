@@ -1,31 +1,31 @@
-{{- define "application" -}}
-{{- range $application := .Values.applications}}
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: {{ .Values.name }}
-  annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notification
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: {{ .Values.spec.destination.namespace }}
-    server: {{ .Values.spec.destination.server }}
-  source:
-    repoURL: {{ .Values.source.repoURL }}
-    targetRevision: HEAD
-    path: ./rollout-test-helm/
-    helm:
-      valueFiles:
-        - {{ .Values.valuesFiles.file }}
-  {{- if .Values.syncPolicy }}
-  syncPolicy:
-    {{- toYaml .Values.syncPolicy | nindent 4 }}
-  {{- end }}
-    syncOptions:
-      - CreateNamespace=true
-{{- end -}}
-{{- end -}}
+# {{- define "application" -}}
+# {{- range $application := .Values.applications}}
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: {{ .Values.name }}
+#   annotations:
+#     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: argocd-notification
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   destination:
+#     namespace: {{ .Values.spec.destination.namespace }}
+#     server: {{ .Values.spec.destination.server }}
+#   source:
+#     repoURL: {{ .Values.source.repoURL }}
+#     targetRevision: HEAD
+#     path: ./rollout-test-helm/
+#     helm:
+#       valueFiles:
+#         - {{ .Values.valuesFiles.file }}
+#   {{- if .Values.syncPolicy }}
+#   syncPolicy:
+#     {{- toYaml .Values.syncPolicy | nindent 4 }}
+#   {{- end }}
+#     syncOptions:
+#       - CreateNamespace=true
+# {{- end -}}
+# {{- end -}}

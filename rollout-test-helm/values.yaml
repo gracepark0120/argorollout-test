@@ -4,13 +4,8 @@
 
 replicaCount: 1
 source:
-  repoURL: https://github.com/STCLab-Inc/surffy-k8s-helm
+  repoURL: https://github.com/gracepark0120/argorollout-test
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 spec:
   destination:
