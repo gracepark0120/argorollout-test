@@ -37,7 +37,7 @@ eum_api:
   service_name: ###
 
 canary_test:
-  service_name: {{ include "rollout-test-helm.fullname" . }}.rollout-canary.svc.cluster.local
+  service_name: rollout-test-helm.rollout-canary.svc.cluster.local
 
 center_api_v2:
   service_name: dev-scp-center-api-v2.scp-system.svc.cluster.local ## 클러스터 내 서비스 주소 [서비스 이름].[네임스페이스].svc.cluster.local
