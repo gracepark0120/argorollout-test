@@ -1,0 +1,23 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ include "rollout-test-helm.fullname" . }}
+  namespace: {{ .Values.spec.destination.namespace }}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts: 
+    - {{ include "rollout-test-helm.fullname" . }}
+  - port:
+      number: 443
+      name: https
+      protocol: HTTP
+    hosts: 
+    - {{ .Values.istio.hosts }}
+{{- end }}

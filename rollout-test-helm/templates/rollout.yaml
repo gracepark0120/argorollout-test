@@ -8,11 +8,11 @@ spec:
   revisionHistoryLimit: {{ .Values.rollout.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app: rollout-bluegreen
+      app: rollout-canary ###
   template:
     metadata:
       labels:
-        app: rollout-bluegreen
+        app: rollout-canary ####
     spec:
       containers:
       - name: rollouts-demo
@@ -21,7 +21,26 @@ spec:
         ports:
         - containerPort: {{ .Values.rollout.containerPort }}
   strategy:
-    blueGreen:
-      activeService: {{ .Values.rollout.activeService }}
-      previewService: {{ .Values.rollout.previewService }}
-      autoPromotionEnabled: {{ .Values.rollout.autoPromotionEnabled }}
+    canary:
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ include "rollout-test-helm.fullname" . }}       # required
+            routes:
+            - primary                 # optional if there is a single route in VirtualService, required otherwise
+          destinationRule:
+            name: {{ include "rollout-test-helm.fullname" . }}    # required
+            canarySubsetName: canary  # required
+            stableSubsetName: stable # required
+          
+      steps:
+      - setWeight: 5
+      - pause:
+          duration: 2m
+      - setWeight: 10
+      - pause:
+          duration: {} # puase indefinitely 수동 promote 해야 최종 배포됨
+      
+      - setWeight: 20
+      - pause: { duration: 31s }
+

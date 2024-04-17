@@ -1,0 +1,27 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Rollout
+# metadata:
+#   name: {{ .Values.rollout.name }}
+#   namespace: {{ .Values.spec.destination.namespace }}
+# spec:
+#   replicas: {{ .Values.rollout.replicas }}
+#   revisionHistoryLimit: {{ .Values.rollout.revisionHistoryLimit }}
+#   selector:
+#     matchLabels:
+#       app: rollout-bluegreen
+#   template:
+#     metadata:
+#       labels:
+#         app: rollout-bluegreen
+#     spec:
+#       containers:
+#       - name: rollouts-demo
+#         image: {{ .Values.rollout.image }}
+#         imagePullPolicy: {{ .Values.rollout.imagePullPolicy }}
+#         ports:
+#         - containerPort: {{ .Values.rollout.containerPort }}
+#   strategy:
+#     blueGreen:
+#       activeService: {{ .Values.rollout.activeService }}
+#       previewService: {{ .Values.rollout.previewService }}
+#       autoPromotionEnabled: {{ .Values.rollout.autoPromotionEnabled }}

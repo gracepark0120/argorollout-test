@@ -3,7 +3,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: rollout-bluegreen-active
+  name: {{ .Values.rollout.activeService }}
   namespace: {{ .Values.spec.destination.namespace }}
 spec:
   type: {{ .Values.rolloutBlueGreen.active.type }}
@@ -22,7 +22,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: rollout-bluegreen-preview
+  name: {{ .Values.rollout.previewService }}
   namespace: {{ .Values.spec.destination.namespace }}
 spec:
   type: {{ .Values.rolloutBlueGreen.preview.type }}
@@ -35,3 +35,20 @@ spec:
     nodePort: {{ .Values.rolloutBlueGreen.preview.nodePort }}
 
 {{- end }}
+
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ include "rollout-test-helm.fullname" . }}
+#   labels:
+#     {{- include "scp-center-api.labels" . | nindent 4 }}
+# spec:
+#   type: {{ .Values.service.type }}
+#   ports:
+#     - port: {{ .Values.service.port }}
+#       targetPort: http
+#       protocol: TCP
+#       name: http
+#   selector:
+#     {{- include "scp-center-api.selectorLabels" . | nindent 4 }} ### 확인하기

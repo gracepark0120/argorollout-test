@@ -1,0 +1,27 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "rollout-test-helm.fullname" . }}
+  namespace: {{ .Values.spec.destination.namespace }}
+spec:
+  hosts:
+  - "*"  #### 이거 확인해야됨ㅁ
+  gateways:
+  - {{ include "rollout-test-helm.fullname" . }}
+  http:
+  ### center_api_v2 로 라우팅할 경로
+  - match:
+     - uri:
+        prefix: "/" 
+    route:
+    - destination:
+        host: {{ include "rollout-test-helm.fullname" . }}
+        subset: stable
+      weight: 100
+    - destination:
+        host: {{ include "rollout-test-helm.fullname" . }}
+        subset: canary
+      weight: 0
+  
+{{- end }}

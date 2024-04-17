@@ -1,0 +1,18 @@
+{{- if .Values.rolloutCanary.active.enabled }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "rollout-test-helm.fullname" . }}
+  namespace: {{ .Values.spec.destination.namespace }}
+spec:
+  type: {{ .Values.rolloutCanary.active.type }}
+  selector:
+    app: rollout-canary
+  ports:
+  - protocol: TCP
+    port: {{ .Values.rolloutCanary.active.port }}
+    targetPort: {{ .Values.rolloutCanary.active.targetPort }}
+    nodePort: {{ .Values.rolloutCanary.active.nodePort }}
+
+{{- end }}

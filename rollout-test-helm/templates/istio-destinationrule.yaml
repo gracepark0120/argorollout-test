@@ -1,0 +1,16 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "rollout-test-helm.fullname" . }}
+  namespace: {{ .Values.spec.destination.namespace }}
+spec:
+  host: {{ .Values.istio.hosts }}
+  subsets:
+    - name: canary
+      labels:
+        app: rollout-canary
+    - name: stable
+      labels:
+        app: rollout-canary
+{{- end }}
