@@ -5,7 +5,7 @@ metadata:
   name: {{ include "rollout-test-helm.fullname" . }}
   namespace: {{ .Values.spec.destination.namespace }}
 spec:
-  host: {{ .Values.istio.hosts }}
+  host: "*"
   subsets:
   - name: canary
     labels:

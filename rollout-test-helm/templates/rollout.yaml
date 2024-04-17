@@ -38,9 +38,6 @@ spec:
       - pause:
           duration: 2m
       - setWeight: 10
-      - pause:
-          duration: {} # puase indefinitely 수동 promote 해야 최종 배포됨
-      
-      - setWeight: 20
-      - pause: { duration: 31s }
+      - pause: 
+          duration: 2m
 
