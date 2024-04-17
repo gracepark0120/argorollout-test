@@ -19,5 +19,5 @@ spec:
       name: https
       protocol: HTTP
     hosts: 
-    - {{ .Values.istio.hosts }}
+    - {{ include "rollout-test-helm.fullname" . }}
 {{- end }}

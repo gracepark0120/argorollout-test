@@ -7,10 +7,10 @@ metadata:
 spec:
   host: {{ .Values.istio.hosts }}
   subsets:
-    - name: canary
-      labels:
-        app: rollout-canary
-    - name: stable
-      labels:
-        app: rollout-canary
+  - name: canary
+    labels:
+      app: rollout-canary
+  - name: stable
+    labels:
+      app: rollout-canary
 {{- end }}
